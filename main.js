@@ -1,10 +1,10 @@
 document.addEventListener('DOMContentLoaded',()=>{
-const productsGrid = document.getElementById('product-grid');
+const productsGrid = document.getElementById('products-grid');
 const  cartItemsDiv = document.getElementById('cart-items');
 const subtotalSpan = document.getElementById('subtotal');
-const taxtSpan = document.getElementById ('taxt');
+const taxSpan = document.getElementById ('tax');
 const totalSpan = document.getElementById('total');
-const chechoutBtn = document.getElementById('chechout-btn');
+const checkoutBtn = document.getElementById('checkout-btn');
 
 const products = [
     { id: 1, name: 'Bur', price: 2500, image: 'https://via.placeholder.com/80?text=Bur' },
@@ -60,9 +60,9 @@ function addToCart(product){
         let subtotal=0;
 
         cart.forEach(item=>{
-            const cartItemsDiv= document.createElement ('div');
-            cartItemsDiv.classList.add('cart-item');
-            cartItemsDiv.innerHTML = `
+            const itemContainer  = document.createElement ('div');
+            itemContainer.classList.add('cart-item');
+            itemContainer.innerHTML = `
             
             <span>${item.name} (${item.quantity})</span>
             <span>${(item.price * item.quantity).toLocaleString()}SL shilin </span>
@@ -70,7 +70,7 @@ function addToCart(product){
             <button class="remove-btn" data-id="${item.id}"> Xidh </button>
 
             `;
-            cartItemsDiv.appendChild(cartItemsDiv);
+            cartItemsDiv.appendChild(itemContainer);
             
             subtotal+= item.price * item.quantity ; 
 
@@ -80,18 +80,39 @@ function addToCart(product){
         const total = subtotal + tax;
 
         subtotalSpan.textContent= subtotal.toLocaleString();
-        taxtSpan.taxContent = total.toLocaleString();
+        taxSpan.textContent = tax.toLocaleString();
+        totalSpan.textContent = total.toLocaleString();
 
         const removeButtons= document.querySelectorAll('.remove-btn');
         removeButtons.forEach(button=>{
             button.addEventListener('click',(e)=>{
-                const idToRemove = parseInt(e.target.datase.id);
+                const idToRemove = parseInt(e.target.dataset.id);
                 removeFromCart(idToRemove);
             });
         });
     }
+     // ka saar
+     function removeFromCart(id){
+        cart = cart.filter(item => item.id !==id);
+        updateCartDisplay();
+     }
+
+     //xisaab xidh
+
+     checkoutBtn.addEventListener('click', ()=> {
+        if (cart.length >0){
+            alert('Wardarta guud waa ${totalSpan.textContent} SL shilin.  waad ku maadsantahay!')
+
+            cart = [];
+            updateCartDisplay();
+       
+        }else {
+            alert ('Fadlan wax ku dar dambiisha kahor intaadan xisaab soo xirin.');
+
+        }
+     });
+      displayProducts();
 
 
 
-
-})
+});
